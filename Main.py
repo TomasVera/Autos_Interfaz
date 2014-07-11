@@ -8,15 +8,6 @@ import os
 
 
 class Main(QtGui.QMainWindow):
-
-	tabla_columnas = (
-		(u"Título",200),
-		(u"Año",50),
-		(u"Director",150),
-		(u"País",50),
-		(u"Rank",40),
-		)
-
 	def __init__(self, parent=None):
 		QtGui.QMainWindow.__init__(self, parent)
 		self.ui = Ui_MainWindow()
