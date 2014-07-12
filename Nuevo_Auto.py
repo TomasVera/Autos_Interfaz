@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from PySide import QtGui, QtCore
-from MainWindow import Ui_MainWindow
 import Nuevo_Auto_ui
 
 class NuevoAuto(QtGui.QDialog):
