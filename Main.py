@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import sys
 from PySide import QtGui, QtCore
-from MainWindow import Ui_MainWindow
+from Main_ui import Ui_MainWindow
 import Marcas
 import Autos
 import os
