@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from PySide import QtGui, QtCore
-from MainWindow import Ui_MainWindow
 import Nueva_Marca_ui
 
 class NuevaMarca(QtGui.QDialog):
