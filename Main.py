@@ -14,6 +14,7 @@ class Main(QtGui.QMainWindow):
 		self.ui.setupUi(self)
 		self.show()
 		self.connect_actions()
+		self.setGeometry(300,150,self.width(),self.height())
 
 	def connect_actions(self):
 		self.ui.abrir_marcas.clicked.connect(self.action_abrir_marcas)

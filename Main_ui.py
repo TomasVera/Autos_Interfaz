@@ -36,7 +36,7 @@ class Ui_MainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QtGui.QApplication.translate("MainWindow", "MainWindow", None, QtGui.QApplication.UnicodeUTF8))
+        MainWindow.setWindowTitle(QtGui.QApplication.translate("MainWindow", "Main", None, QtGui.QApplication.UnicodeUTF8))
         self.abrir_marcas.setText(QtGui.QApplication.translate("MainWindow", "Marcas", None, QtGui.QApplication.UnicodeUTF8))
         self.abrir_autos.setText(QtGui.QApplication.translate("MainWindow", "Autos", None, QtGui.QApplication.UnicodeUTF8))
 

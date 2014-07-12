@@ -90,7 +90,7 @@ class Ui_AdministrarAutos(object):
         QtCore.QMetaObject.connectSlotsByName(AdministrarAutos)
 
     def retranslateUi(self, AdministrarAutos):
-        AdministrarAutos.setWindowTitle(QtGui.QApplication.translate("AdministrarAutos", "Dialog", None, QtGui.QApplication.UnicodeUTF8))
+        AdministrarAutos.setWindowTitle(QtGui.QApplication.translate("AdministrarAutos", "Administrar - Autos", None, QtGui.QApplication.UnicodeUTF8))
         self.btn_new_car.setText(QtGui.QApplication.translate("AdministrarAutos", "Nuevo", None, QtGui.QApplication.UnicodeUTF8))
         self.btn_edit_car.setText(QtGui.QApplication.translate("AdministrarAutos", "Editar", None, QtGui.QApplication.UnicodeUTF8))
         self.btn_delete_car.setText(QtGui.QApplication.translate("AdministrarAutos", "Eliminar", None, QtGui.QApplication.UnicodeUTF8))

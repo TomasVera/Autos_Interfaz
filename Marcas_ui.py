@@ -48,7 +48,7 @@ class Ui_Dialog(object):
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
     def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(QtGui.QApplication.translate("Marcas", "Marcas", None, QtGui.QApplication.UnicodeUTF8))
+        Dialog.setWindowTitle(QtGui.QApplication.translate("Marcas", "Administrar - Marcas", None, QtGui.QApplication.UnicodeUTF8))
         self.btn_nueva_marca.setText(QtGui.QApplication.translate("Dialog", "Nueva", None, QtGui.QApplication.UnicodeUTF8))
         self.btn_editar_marca.setText(QtGui.QApplication.translate("Dialog", "Editar", None, QtGui.QApplication.UnicodeUTF8))
         self.btn_eliminar_marca.setText(QtGui.QApplication.translate("Dialog", "Eliminar", None, QtGui.QApplication.UnicodeUTF8))
