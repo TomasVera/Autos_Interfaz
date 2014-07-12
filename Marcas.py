@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from PySide import QtGui, QtCore
-from Main_ui import Ui_MainWindow
 import Marcas_ui
 import Nueva_Marca
 import Autos
