@@ -25,6 +25,50 @@ def getAutoId(id):
 	auto = resultado.fetchall()
 	return auto
 
+def getAutos2(self, rend = None, anio = None, peso = None):
+	if(anio == 0 and peso == 0):
+		c = conectar()[0]
+		query = "SELECT * FROM autos WHERE rendimiento == ?"
+		resultado = c.execute(query, [rend])
+		datos = resultado.fetchall()
+		return datos
+	if(rend == 0 and peso == 0):
+		c = conectar()[0]
+		query = "SELECT * FROM autos WHERE fecha_creacion == ?"
+		resultado = c.execute(query, [anio])
+		datos = resultado.fetchall()
+		return datos
+	if(rend == 0 and anio == 0):
+		c = conectar()[0]
+		query = "SELECT * FROM autos WHERE peso == ?"
+		resultado = c.execute(query, [peso])
+		datos = resultado.fetchall()
+		return datos
+	if(rend == 0):
+		c = conectar()[0]
+		query = "SELECT * FROM autos WHERE fecha_creacion == ? AND peso == ?"
+		resultado = c.execute(query, [anio, peso])
+		datos = resultado.fetchall()
+		return datos
+	if(anio == 0):
+		c = conectar()[0]
+		query = "SELECT * FROM autos WHERE rendimiento == ? AND peso == ?"
+		resultado = c.execute(query, [rend, peso])
+		datos = resultado.fetchall()
+		return datos	
+	if(peso == 0):
+		c = conectar()[0]
+		query = "SELECT * FROM autos WHERE rendimiento == ? AND fecha_creacion == ?"
+		resultado = c.execute(query, [rend, anio])
+		datos = resultado.fetchall()
+		return datos
+	else:
+		c = conectar()[0]
+		query = "SELECT * FROM autos WHERE rendimiento == ? AND peso == ? AND fecha_creacion == ?"
+		resultado = c.execute(query, [rend, peso, anio])
+		datos = resultado.fetchall()
+		return datos
+
 def getMarcas():
 	'''Método para obtener los autos listados en la tabla "marcas"'''
 	c = conectar()[0]

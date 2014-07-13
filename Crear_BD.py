@@ -36,7 +36,7 @@ def main():
 	
 	controller.agregarInfoMarcas('Hyundai', 'Corea del Sur')
 	controller.agregarInfoAutos('i10', 'Blanco', 'SOHC 1.1 cc', 1380, u'Con personalidad y estilo, el nuevo Hyundai i10 aporta una frescura nueva y mas intensidad a la conduccion.',
-								18, "1.jpg", "2010", 0, 0)
+								18, "1.jpg", "2010", 0, 1)
 	controller.agregarInfoTipos('Hatchback', 4)
 
 	

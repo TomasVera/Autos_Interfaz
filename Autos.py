@@ -13,10 +13,11 @@ class Autos(QtGui.QDialog):
         (u"Motor",100),
         (u"Peso", 50),
         (u"Rendimiento", 100),
-        (u"Fecha", 50),
+        (u"Año", 50),
         (u"Marca", 50),
         (u"Tipo", 50)
         )
+
 
     def __init__(self):
         super(Autos, self).__init__()
@@ -30,6 +31,9 @@ class Autos(QtGui.QDialog):
         self.ui.btn_new_car.clicked.connect(self.action_btn_new_car)
         self.ui.abrir_marca2.clicked.connect(self.action_abrir_marca2)
         self.ui.btn_edit_car.clicked.connect(self.action_btn_edit_car)
+        self.ui.cb_anio.currentIndexChanged[int].connect(self.indexChanged)
+        self.ui.cb_peso.currentIndexChanged[int].connect(self.indexChanged)
+        self.ui.cb_rendimiento.currentIndexChanged[int].connect(self.indexChanged)
 
     def action_btn_new_car(self):
         self.nuevoAutoWindow = Nuevo_Auto.NuevoAuto()
@@ -51,9 +55,43 @@ class Autos(QtGui.QDialog):
         self.marcasWindow = Marcas.Marcas()
         self.marcasWindow.exec_()
 
+    def indexChanged(self):
+        getRendimiento = int(self.ui.cb_rendimiento.currentIndex())
+        getPeso = int(self.ui.cb_peso.currentIndex())
+        getAnio = int(self.ui.cb_anio.currentIndex())
+        print(getRendimiento)
+        print("--")
+        print(getPeso)
+        print("--")
+        print(getAnio)
+        if (getRendimiento == 0 and getPeso == 0):
+            if(getAnio == 0):
+                self.load_data_tabla()
+            else:
+                self.load_data_tabla2(getRendimiento, getAnio, getPeso)
+
     def load_data_tabla(self):
-        '''Método para mostrar los datos de la tabla, muestra todos los elementos de la tabla "movies" de la base de datos'''
         datos = controller.getAutos()
+        rows = len(datos)
+        model = QtGui.QStandardItemModel(rows,len(self.tabla_columnas))
+        self.ui.car_table.setModel(model)
+
+        for col,h in enumerate(self.tabla_columnas):
+            model.setHeaderData(col, QtCore.Qt.Horizontal, h[0])
+            self.ui.car_table.setColumnWidth(col, h[1])
+
+        for i,data in enumerate(datos):
+            row = [data[1],data[2],data[3],data[4],data[6],data[8],data[9],data[10]]
+            for j, field in enumerate(row):
+                index = model.index(i, j, QtCore.QModelIndex())
+                model.setData(index,field)
+            model.item(i).mov = data
+
+        modelSel = self.ui.car_table.selectionModel()
+        modelSel.currentChanged.connect(self.tabla_cell_selected)
+
+    def load_data_tabla2(self, rend, anio, peso):
+        datos = controller.getAutos2(rend, anio, peso)
         rows = len(datos)
         model = QtGui.QStandardItemModel(rows,len(self.tabla_columnas))
         self.ui.car_table.setModel(model)

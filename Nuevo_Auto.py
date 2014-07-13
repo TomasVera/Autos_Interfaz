@@ -28,10 +28,9 @@ class NuevoAuto(QtGui.QDialog):
 				self.ui.motor_auto.setText(row['motor'])
 				#self.ui.tipo_auto.setText(row['tipo'])
 				self.ui.edit_descripcion.setText(row['descripcion'])
-				#Sself.ui.marca_auto.setText(row['marca'])
 				self.ui.rendimiento_auto.setText(str(row['rendimiento']))
 				self.ui.peso_auto.setText(str(row['peso']))
-				#self.marca_p.setCurrentIndex(row['id_marcas'])
+				self.ui.marca_auto.setCurrentIndex(int(row['fk_id_marca']))
 			if(auto[0]['imagen']!=None):
 				pmap = QtGui.QPixmap(str(os.getcwd())+"/images/"+str(auto[0]['imagen']))
 				self.ui.nueva_imagen.setPixmap(pmap)

@@ -122,6 +122,20 @@ class Ui_Dialog(object):
         self.verticalLayout_5.addLayout(self.horizontalLayout)
         self.gridLayout.addLayout(self.verticalLayout_5, 0, 0, 1, 1)
 
+        marcas = [
+            {"id": "0", "name": "----"},
+            {"id": "1", "name": "Hyundai"}]
+
+        for element in marcas:
+            self.marca_auto.addItem(element["name"], element["id"])
+
+
+        index = 1
+        self.cb_creacion_auto.insertItem(0, "----");
+        for i in range(1920,2015):
+            self.cb_creacion_auto.insertItem(index, str(i))
+            index += 1
+
         self.retranslateUi(Dialog)
         QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL("accepted()"), Dialog.accept)
         QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL("rejected()"), Dialog.reject)

@@ -9,6 +9,7 @@
 
 from PySide import QtCore, QtGui
 
+
 class Ui_AdministrarAutos(object):
     def setupUi(self, AdministrarAutos):
         AdministrarAutos.setObjectName("AdministrarAutos")
@@ -86,6 +87,37 @@ class Ui_AdministrarAutos(object):
         self.horizontalLayout_2.addWidget(self.abrir_marca2)
         self.gridLayout.addLayout(self.horizontalLayout_2, 0, 1, 1, 1)
 
+
+        marcas = [
+            {"id": "0", "name": "----"},
+            {"id": "1", "name": "Marca"},
+            {"id": "2", "name": "Modelo"},
+            {"id": "3", "name": "Motor"},
+            {"id": "4", "name": "Tipo"}]
+        for element in marcas:
+            self.cb_buscador.addItem(element["name"], element["id"])
+
+
+        index = 1
+        self.cb_anio.insertItem(0, "----");
+        for i in range(1920,2015):
+            self.cb_anio.insertItem(index, str(i))
+            index += 1
+
+
+        index = 1
+        self.cb_peso.insertItem(0, "----")
+        for i in range(500,3001):
+            self.cb_peso.insertItem(index, str(i))
+            index += 1
+
+
+        index = 1
+        self.cb_rendimiento.insertItem(0, "--")
+        for i in range(1,30):
+            self.cb_rendimiento.insertItem(index, str(i))
+            index += 1
+
         self.retranslateUi(AdministrarAutos)
         QtCore.QMetaObject.connectSlotsByName(AdministrarAutos)
 
@@ -102,4 +134,4 @@ class Ui_AdministrarAutos(object):
         self.descripcion.setText(QtGui.QApplication.translate("AdministrarAutos", "Descripcion", None, QtGui.QApplication.UnicodeUTF8))
         self.label_4.setText(QtGui.QApplication.translate("AdministrarAutos", "Ir a:", None, QtGui.QApplication.UnicodeUTF8))
         self.abrir_marca2.setText(QtGui.QApplication.translate("AdministrarAutos", "Marcas", None, QtGui.QApplication.UnicodeUTF8))
-
+    
