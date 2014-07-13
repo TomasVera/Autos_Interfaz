@@ -36,8 +36,15 @@ class Autos(QtGui.QDialog):
         self.nuevoAutoWindow.exec_()
 
     def action_btn_edit_car(self):
-        self.nuevoAutoWindow = Nuevo_Auto.NuevoAuto()
-        self.nuevoAutoWindow.exec_()
+        index = self.ui.car_table.currentIndex()
+        if index.row() == -1: #No se ha seleccionado producto
+            self.errorMessageDialog = QtGui.QErrorMessage(self)
+            self.errorMessageDialog.showMessage("Debe seleccionar un auto")
+            return False
+        else:
+            id = index.row()+1
+            self.nuevoAutoWindow = Nuevo_Auto.NuevoAuto(id)
+            self.nuevoAutoWindow.exec_()
 
     def action_abrir_marca2(self):
         self.setVisible(False)
@@ -69,6 +76,5 @@ class Autos(QtGui.QDialog):
         id = index.row()+1
         auto = controller.getAutoId(id)
         pmap = QtGui.QPixmap(str(os.getcwd())+"/images/"+str(auto[0]['imagen']))
-
         self.ui.imagen.setPixmap(pmap)
         self.ui.descripcion.setText(str(auto[0]['descripcion']))
