@@ -44,7 +44,7 @@ class Ui_Dialog(object):
         self.horizontalLayout_3.addLayout(self.verticalLayout_2)
         self.verticalLayout_4 = QtGui.QVBoxLayout()
         self.verticalLayout_4.setObjectName("verticalLayout_4")
-        self.marca_auto = QtGui.QLineEdit(Dialog)
+        self.marca_auto = QtGui.QComboBox(Dialog)
         self.marca_auto.setObjectName("marca_auto")
         self.verticalLayout_4.addWidget(self.marca_auto)
         self.peso_auto = QtGui.QLineEdit(Dialog)
