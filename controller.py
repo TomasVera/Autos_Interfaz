@@ -26,51 +26,6 @@ def getAutoId(id):
 	auto = resultado.fetchall()
 	return auto
 
-def getAutos2(rend, anio, peso):
-	if(anio == 0 and peso == 0):
-		c = conectar()[0]
-		query = "SELECT * FROM autos WHERE rendimiento == ?"
-		resultado = c.execute(query, [rend])
-		datos = resultado.fetchall()
-		return datos
-	if(rend == 0 and peso == 0):
-		c = conectar()[0]
-		query = "SELECT * FROM autos WHERE fecha_creacion == ?"
-		resultado = c.execute(query, [anio])
-		datos = resultado.fetchall()
-		return datos
-	if(rend == 0 and anio == 0):
-		c = conectar()[0]
-		query = "SELECT * FROM autos WHERE peso == ?"
-		resultado = c.execute(query, [peso])
-		datos = resultado.fetchall()
-		return datos
-	if(rend == 0):
-		c = conectar()[0]
-		query = "SELECT * FROM autos WHERE fecha_creacion == ? AND peso == ?"
-		resultado = c.execute(query, [anio, peso])
-		datos = resultado.fetchall()
-		return datos
-	if(anio == 0):
-		c = conectar()[0]
-		query = "SELECT * FROM autos WHERE rendimiento == ? AND peso == ?"
-		resultado = c.execute(query, [rend, peso])
-		datos = resultado.fetchall()
-		return datos	
-	if(peso == 0):
-		c = conectar()[0]
-		query = "SELECT * FROM autos WHERE rendimiento == ? AND fecha_creacion == ?"
-		resultado = c.execute(query, [rend, anio])
-		datos = resultado.fetchall()
-		return datos
-	else:
-		anio = str(anio)
-		c = conectar()[0]
-		query = "SELECT * FROM autos WHERE rendimiento == ? AND peso == ? AND fecha_creacion == ?"
-		resultado = c.execute(query, [rend, peso, anio])
-		datos = resultado.fetchall()
-		return datos
-
 def getMarcas():
 	'''Método para obtener los autos listados en la tabla "marcas"'''
 	c = conectar()[0]
@@ -195,7 +150,68 @@ def agregarInfoTipos(nombre, puertas):
 	c[0].execute('''INSERT INTO tipos(nombre, puertas) VALUES(?, ?)''',(nombre, puertas))
 	c[1].commit()
 
-
+def getAutosPor(text, index, marca):
+	'''Método para obtener lista de productos los cuales su nombre coincida con text'''
+	c = conectar()
+	marca = int(marca)
+	if (marca==0):
+		marca=""
+		marca = "%"+marca+"%"
+	text = "%"+text+"%"
+	if (index == 1):
+		query = "SELECT * FROM autos WHERE modelo LIKE ? and fk_id_marca LIKE ?"
+		resultado = c[0].execute(query, [text,marca])
+		autos = resultado.fetchall()
+		return autos
+	elif (index == 2):
+		query = "SELECT * FROM autos WHERE color LIKE ? and fk_id_marca LIKE ?"
+		resultado = c[0].execute(query, [text,marca])
+		autos = resultado.fetchall()
+		return autos
+	elif (index == 3):
+		query = "SELECT * FROM autos WHERE motor LIKE ? and fk_id_marca LIKE ?"
+		resultado = c[0].execute(query, [text,marca])
+		autos = resultado.fetchall()
+		return autos
+	elif (index == 4):
+		query = "SELECT * FROM autos WHERE peso LIKE ? and fk_id_marca LIKE ?"
+		resultado = c[0].execute(query, [text,marca])
+		autos = resultado.fetchall()
+		return autos
+	elif (index == 5):
+		query = "SELECT * FROM autos WHERE fecha_creacion LIKE ? and fk_id_marca LIKE ?"
+		resultado = c[0].execute(query, [text,marca])
+		autos = resultado.fetchall()
+		return autos
+	elif (index == 6):
+		query = "SELECT * FROM autos WHERE rendimiento LIKE ? and fk_id_marca LIKE ?"
+		resultado = c[0].execute(query, [text,marca])
+		autos = resultado.fetchall()
+		return autos
+	elif (index == 7):
+		text = text[1:-1]
+		datos = getTipos()
+		tiposBD = ["-"]
+		tipo=0
+		for i in datos:
+			actual = [str(i['nombre'])]
+			tiposBD.append(actual)
+		for i,tipoBD in enumerate(tiposBD):
+			if (tipoBD[0] == text):
+				tipo = i
+		if (text == ""):
+			query = "SELECT * FROM autos WHERE fk_id_marca LIKE ?"
+			resultado = c[0].execute(query, [marca])
+		else:
+			query = "SELECT * FROM autos WHERE fk_id_tipo LIKE ? and fk_id_marca LIKE ?"
+			resultado = c[0].execute(query, [tipo,marca])
+		autos = resultado.fetchall()
+		return autos
+	else:
+		query = "SELECT * FROM autos WHERE fk_id_marca LIKE ?"
+		resultado = c[0].execute(query, [marca])
+		autos = resultado.fetchall()
+		return autos
 
 def guardar_imagen(image_filename,image):
 	'''Método que genera una copia del archivo 'image_filename' que guarda en el direcctorio del programa'''

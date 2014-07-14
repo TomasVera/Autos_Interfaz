@@ -7,8 +7,9 @@ import controller
 
 class Marcas(QtGui.QDialog):
     tabla_columnas = (
-        (u"Nombre",100),
-        (u"País",100),
+        (u"Nombre",147),
+        (u"País",146),
+        (u"Total Autos",100),
         )
 
     def __init__(self):
@@ -59,7 +60,12 @@ class Marcas(QtGui.QDialog):
             self.ui.marca_table.setColumnWidth(col, h[1])
 
         for i,data in enumerate(datos):
-            row = [data[1],data[2]]
+            autos = controller.getAutos()
+            total=0
+            for row in autos:
+                if(data[0]==row['fk_id_marca']):
+                    total=total+1
+            row = [data[1],data[2],total]
             for j, field in enumerate(row):
                 index = model.index(i, j, QtCore.QModelIndex())
                 model.setData(index,field)

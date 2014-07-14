@@ -157,6 +157,6 @@ class Ui_Dialog(object):
         self.label_3.setText(QtGui.QApplication.translate("Dialog", "Motor:", None, QtGui.QApplication.UnicodeUTF8))
         self.label_10.setText(QtGui.QApplication.translate("Dialog", "Tipo:", None, QtGui.QApplication.UnicodeUTF8))
         self.label_7.setText(QtGui.QApplication.translate("Dialog", "Imagen:", None, QtGui.QApplication.UnicodeUTF8))
-        self.nueva_imagen.setText(QtGui.QApplication.translate("Dialog", "Aqui va la imagen", None, QtGui.QApplication.UnicodeUTF8))
+        self.nueva_imagen.setText(QtGui.QApplication.translate("Dialog", "[Imagen]", None, QtGui.QApplication.UnicodeUTF8))
         self.btn_examinar.setText(QtGui.QApplication.translate("Dialog", "Examinar", None, QtGui.QApplication.UnicodeUTF8))
 

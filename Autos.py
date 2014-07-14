@@ -28,13 +28,13 @@ class Autos(QtGui.QDialog):
 		self.connect_actions()
 		self.load_data_tabla()
 
+
 	def connect_actions(self):
 		self.ui.btn_new_car.clicked.connect(self.action_btn_new_car)
 		self.ui.abrir_marca2.clicked.connect(self.action_abrir_marca2)
 		self.ui.btn_edit_car.clicked.connect(self.action_btn_edit_car)
 		self.ui.btn_delete_car.clicked.connect(self.action_btn_delete_car)
-		self.ui.cb_anio.currentIndexChanged[int].connect(self.indexChanged)
-		self.ui.cb_peso.currentIndexChanged[int].connect(self.indexChanged)
+		self.ui.lineEdit.textChanged.connect(self.onChanged)
 		self.ui.cb_rendimiento.currentIndexChanged[int].connect(self.indexChanged)
 
 	def action_btn_new_car(self):
@@ -45,8 +45,10 @@ class Autos(QtGui.QDialog):
 	def action_btn_edit_car(self):
 		index = self.ui.car_table.currentIndex()
 		if index.row() == -1: #No se ha seleccionado producto
-			self.errorMessageDialog = QtGui.QErrorMessage(self)
-			self.errorMessageDialog.showMessage("Debe seleccionar un auto")
+			msgBox = QtGui.QMessageBox()
+			msgBox.setWindowTitle("Error")
+			msgBox.setText("Debe seleccionar un auto.")
+			msgBox.exec_()
 			return False
 		else:
 			model = self.ui.car_table.model()
@@ -61,25 +63,9 @@ class Autos(QtGui.QDialog):
 		self.marcasWindow.exec_()
 
 	def indexChanged(self):
-		getRendimiento = int(self.ui.cb_rendimiento.currentIndex())
-		if(int(self.ui.cb_peso.currentIndex())!=0):
-			getPeso = int(self.ui.cb_peso.currentIndex())+499
-		else:
-			getPeso = 0
-		if(int(self.ui.cb_anio.currentIndex())!=0):
-			getAnio = int(self.ui.cb_anio.currentIndex())+1919
-		else:
-			getAnio = 0
-		print(getRendimiento)
-		print("--")
-		print(getPeso)
-		print("--")
-		print(getAnio)
-		if (getRendimiento != 0 and getPeso != 0):
-			if(getAnio == 0):
-				self.load_data_tabla()
-			else:
-				self.load_data_tabla2(getRendimiento, getAnio, getPeso)
+		marca = int(self.ui.cb_rendimiento.currentIndex())
+		getIndex = self.ui.cb_buscador.currentIndex()
+		self.load_data_tabla3(self.ui.lineEdit.text(),getIndex,marca)
 
 	def load_data_tabla(self):
 		datos = controller.getAutos()
@@ -103,8 +89,8 @@ class Autos(QtGui.QDialog):
 		modelSel = self.ui.car_table.selectionModel()
 		modelSel.currentChanged.connect(self.tabla_cell_selected)
 
-	def load_data_tabla2(self, rend, anio, peso):
-		datos = controller.getAutos2(rend, anio, peso)
+	def load_data_tabla3(self, text, index, marca):
+		datos = controller.getAutosPor(text,index,marca)
 		rows = len(datos)
 		model = QtGui.QStandardItemModel(rows,len(self.tabla_columnas))
 		self.ui.car_table.setModel(model)
@@ -116,7 +102,7 @@ class Autos(QtGui.QDialog):
 		for i,data in enumerate(datos):
 			marca = controller.getMarcaId(int(data[10]))[0]['nombre']
 			tipo = controller.getTipoId(int(data[9]))[0]['nombre']
-			row = [data[1],data[2],data[3],data[4],data[6],data[8],tipo,marca]
+			row = [data[1],data[2],data[3],data[4],data[6],data[8],tipo,marca,data[0]]
 			for j, field in enumerate(row):
 				index = model.index(i, j, QtCore.QModelIndex())
 				model.setData(index,field)
@@ -130,6 +116,7 @@ class Autos(QtGui.QDialog):
 		id = model.index(index.row(), 8, QtCore.QModelIndex()).data()
 		auto = controller.getAutoId(id)
 		pmap = QtGui.QPixmap(str(os.getcwd())+"/images/"+str(auto[0]['imagen']))
+		pmap = pmap.scaled(250,200,QtCore.Qt.KeepAspectRatio)
 		self.ui.imagen.setPixmap(pmap)
 		self.ui.descripcion.setText(str(auto[0]['descripcion']))
 
@@ -161,3 +148,9 @@ class Autos(QtGui.QDialog):
 						self.ui.errorMessageDialog = QtGui.QErrorMessage(self)
 						self.ui.errorMessageDialog.showMessage("Error al eliminar el producto")
 						return False
+
+	def onChanged(self, text):
+		'''Método para manejar el filtrado de productos por nombre, recibe el texto para filtrar y ocupa el index de la marca filtrada para obtener productos'''
+		getIndex = self.ui.cb_buscador.currentIndex()
+		getMarca = self.ui.cb_rendimiento.currentIndex()
+		self.load_data_tabla3(text, getIndex, getMarca)

@@ -54,7 +54,8 @@ class NuevoAuto(QtGui.QDialog):
 		if(image_filename):
 			self.image_filename = image_filename
 			if(image_ext==".jpg"):
-				pmap = self.image_filename
+				pmap = QtGui.QPixmap(self.image_filename)
+				pmap = pmap.scaled(250,200,QtCore.Qt.KeepAspectRatio)
 				self.ui.nueva_imagen.setPixmap(pmap)
 				self.change_image = True
 			elif(image_ext):
@@ -106,6 +107,8 @@ class NuevoAuto(QtGui.QDialog):
 		for i,tipoBD in enumerate(tiposBD):
 			if (tipoBD[0] == tipo):
 				fk_id_tipo = i
+
+
 		if self.identificador == False:
 			controller.agregarInfoAutos(modelo, color, motor, peso, descripcion, rendimiento, imagen, fecha_creacion, fk_id_tipo, fk_id_marca)  
 		else:
