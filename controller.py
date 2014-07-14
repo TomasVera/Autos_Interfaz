@@ -232,3 +232,24 @@ def buscar_imagen(id):
 		return True
 	else:
 		return False
+
+def agregarInfoUsuarios(username, password):
+	"""
+	Método que permite agregar un usuario a la base de datos
+	"""
+	c = conectar()
+	try:
+		c[0].execute('''INSERT INTO usuarios(username, password) VALUES(?, ?)''', [username, password])
+		c[1].commit()
+	except:
+	    pass
+
+def getUsuarios():
+	"""
+	Método para obtener los usuarios listados en la tabla de usuarios
+	"""
+	c = conectar()
+	query = "SELECT * FROM usuarios"
+	resultado = c[0].execute(query)
+	usuarios = resultado.fetchall()
+	return usuarios

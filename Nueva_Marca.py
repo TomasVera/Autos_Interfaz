@@ -26,6 +26,8 @@ class NuevaMarca(QtGui.QDialog):
 				self.ui.nombre_marca.setText(row['nombre'])
 				self.ui.pais_marca.setText(row['pais'])
 		self.accepted.connect(self.action_btn_aceptar)
+		self.setMaximumHeight(self.height()-1)
+		self.setMaximumWidth(self.width()-1)
 
 	def action_btn_aceptar(self):
 		nombre = str(self.ui.nombre_marca.text())

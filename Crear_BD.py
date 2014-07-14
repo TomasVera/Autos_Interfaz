@@ -29,11 +29,21 @@ def crearTabla():
 			fk_id_tipo INTEGER,
 			fk_id_marca INTEGER, FOREIGN KEY(fk_id_marca) REFERENCES marcas(id_marca))'''
 	)
+	c[0].execute('''CREATE TABLE usuarios
+			(id_user INTEGER PRIMARY KEY,
+			username TEXT,
+			password TEXT)'''
+	)
 	 
 def main():    
 
 	crearTabla()
 	
+	controller.agregarInfoUsuarios('Molina', '1234')
+	controller.agregarInfoUsuarios('Felipe', '1234')
+	controller.agregarInfoUsuarios('Jaime', '1234')
+	controller.agregarInfoUsuarios('Tomas', 'soygay')
+
 	controller.agregarInfoMarcas('Hyundai', 'Corea del Sur')
 	controller.agregarInfoMarcas('Suzuki', 'Japon')
 	controller.agregarInfoMarcas('Nissan', 'Japon')
@@ -49,6 +59,7 @@ def main():
 								20, "4.jpg", "2013", 1, 2)
 	controller.agregarInfoAutos('Sentra', 'Gris', '2.0 Lts', 1590, u'Destaca su comodidad al conducir ademas de su suavidad, principalmente insonoro en autopista.',
 								15, "5.jpg", "2011", 2, 3)
+	
 
 
 	

@@ -3,6 +3,7 @@ from PySide import QtGui, QtCore
 import Nuevo_Auto_ui
 import controller
 import os
+import General_Utils
 
 class NuevoAuto(QtGui.QDialog):
 	reloadT = QtCore.Signal()
@@ -41,6 +42,8 @@ class NuevoAuto(QtGui.QDialog):
 				self.ui.nueva_imagen.setPixmap(pmap)
 			else:
 				self.ui.nueva_imagen.setText("<font color='red'> Producto sin imagen")
+		self.setMaximumHeight(self.height()-1)
+		self.setMaximumWidth(self.width()-1)
 
 	def connect_actions(self):
 		self.ui.btn_examinar.clicked.connect(self.action_btn_examinar)
@@ -69,8 +72,8 @@ class NuevoAuto(QtGui.QDialog):
 		color = str(self.ui.color_auto.text())
 		motor = str(self.ui.motor_auto.text())
 		descripcion = str(self.ui.edit_descripcion.toPlainText())
-		rendimiento = int(self.ui.rendimiento_auto.text())
-		peso = int(self.ui.peso_auto.text())
+		rendimiento = self.ui.rendimiento_auto.text()
+		peso = self.ui.peso_auto.text()
 		if(self.change_image):
 			autos = controller.getAutos()
 			autosIds = [0]
@@ -108,10 +111,20 @@ class NuevoAuto(QtGui.QDialog):
 			if (tipoBD[0] == tipo):
 				fk_id_tipo = i
 
-
-		if self.identificador == False:
-			controller.agregarInfoAutos(modelo, color, motor, peso, descripcion, rendimiento, imagen, fecha_creacion, fk_id_tipo, fk_id_marca)  
-		else:
-			controller.editarInfoAutos(self.id, modelo, color, motor, peso, descripcion, rendimiento, imagen, fecha_creacion, fk_id_tipo, fk_id_marca)  
-		self.setVisible(False)
+		Valida= General_Utils.validaDatos(modelo, color, motor, peso, descripcion, rendimiento, imagen, fecha_creacion)
+		print Valida
+		if(Valida!="Campos Incorrectos:"):
+			 self.errorMessageDialog = QtGui.QErrorMessage(self)
+			 self.errorMessageDialog.setWindowTitle("ERROR")
+			 self.errorMessageDialog.showMessage(Valida)
+		if(Valida=="Campos Incorrectos:"):
+						rendimiento=int(rendimiento)
+						peso=int(peso)
+						if self.identificador == False:
+								controller.agregarInfoAutos(modelo, color, motor, peso, descripcion, rendimiento, imagen, fecha_creacion, fk_id_tipo, fk_id_marca)
+								self.setVisible(False)
+						else:
+								controller.editarInfoAutos(self.id, modelo, color, motor, peso, descripcion, rendimiento, imagen, fecha_creacion, fk_id_tipo, fk_id_marca)
+								self.setVisible(False)
+		
 		self.reloadT.emit()

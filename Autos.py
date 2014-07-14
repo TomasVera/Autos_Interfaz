@@ -124,8 +124,10 @@ class Autos(QtGui.QDialog):
 		''' al clickear el boton "Eliminar"'''
 		index = self.ui.car_table.currentIndex()
 		if index.row() == -1: #No se ha seleccionado un producto
-			self.errorMessageDialog = QtGui.QErrorMessage(self)
-			self.errorMessageDialog.showMessage("Debe seleccionar un auto")
+			msgBox = QtGui.QMessageBox()
+			msgBox.setWindowTitle("Aviso")
+			msgBox.setText("El auto fue eliminado con exito.")
+			msgBox.exec_()
 			return False
 		else:
 			msgBox1=QtGui.QMessageBox()
