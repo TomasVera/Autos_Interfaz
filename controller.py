@@ -3,6 +3,7 @@ import sys
 import sqlite3
 from PySide import QtGui, QtCore
 import os
+import shutil
 
 def conectar():
 	con = sqlite3.connect("BASE_DATOS_PRINCIPAL.db")
@@ -25,7 +26,7 @@ def getAutoId(id):
 	auto = resultado.fetchall()
 	return auto
 
-def getAutos2(self, rend = None, anio = None, peso = None):
+def getAutos2(rend, anio, peso):
 	if(anio == 0 and peso == 0):
 		c = conectar()[0]
 		query = "SELECT * FROM autos WHERE rendimiento == ?"
@@ -63,6 +64,7 @@ def getAutos2(self, rend = None, anio = None, peso = None):
 		datos = resultado.fetchall()
 		return datos
 	else:
+		anio = str(anio)
 		c = conectar()[0]
 		query = "SELECT * FROM autos WHERE rendimiento == ? AND peso == ? AND fecha_creacion == ?"
 		resultado = c.execute(query, [rend, peso, anio])
@@ -77,6 +79,28 @@ def getMarcas():
 	datos = resultado.fetchall()
 	return datos
 
+def getMarcaId(id):
+	c = conectar()[0]
+	query = "SELECT * FROM marcas WHERE id_marca = ?"
+	resultado = c.execute(query, [id])
+	auto = resultado.fetchall()
+	return auto
+
+def getTipos():
+	'''Método para obtener los tipo listados en la tabla "tipos"'''
+	c = conectar()[0]
+	query = "SELECT * FROM tipos"
+	resultado = c.execute(query)
+	datos = resultado.fetchall()
+	return datos
+
+def getTipoId(id):
+	c = conectar()[0]
+	query = "SELECT * FROM tipos WHERE id_tipo = ?"
+	resultado = c.execute(query, [id])
+	auto = resultado.fetchall()
+	return auto
+
 def agregarInfoMarcas(nombre, pais):
 	"""
 	Método que permite agregar una marca a la base de datos
@@ -86,19 +110,36 @@ def agregarInfoMarcas(nombre, pais):
 	c[1].commit()
 
 		
-def agregarInfoAutos(modelo, color, motor, peso, descripcion, rendimiento, imagen, fecha_creacion, fk_id_marca, fk_id_tipo):
+def agregarInfoAutos(modelo, color, motor, peso, descripcion, rendimiento, imagen, fecha_creacion, fk_id_tipo, fk_id_marca):
 	"""
-	Método que permite agregar un producto a la base de datos
+	Método que permite agregar un auto a la base de datos
 	"""
 	c = conectar()
-	c[0].execute('''INSERT INTO autos(modelo, color, motor, peso, descripcion, rendimiento, imagen, fecha_creacion, fk_id_marca, fk_id_tipo)
-					VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',(modelo, color, motor, peso, descripcion, rendimiento, imagen, fecha_creacion, fk_id_marca, fk_id_tipo))
+	c[0].execute('''INSERT INTO autos(modelo, color, motor, peso, descripcion, rendimiento, imagen, fecha_creacion, fk_id_tipo, fk_id_marca)
+					VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',(modelo, color, motor, peso, descripcion, rendimiento, imagen, fecha_creacion, fk_id_tipo, fk_id_marca))
+	c[1].commit()
+
+def editarInfoAutos(id, modelo, color, motor, peso, descripcion, rendimiento, imagen, fecha_creacion, fk_id_tipo, fk_id_marca):
+	"""
+	Método que permite editar un auto en la base de datos
+	"""
+	c = conectar()
+	query = "UPDATE autos SET modelo = ?,color = ?, motor = ?, peso = ?, descripcion = ?, rendimiento = ?, imagen = ?, fecha_creacion = ?, fk_id_tipo = ?, fk_id_marca = ? WHERE id_auto = ?"
+	c[0].execute(query, [modelo,color,motor,peso,descripcion,rendimiento,imagen,fecha_creacion,fk_id_tipo,fk_id_marca,id])
 	c[1].commit()
 
 def agregarInfoTipos(nombre, puertas):
 	"""
-	Método que permite agregar una marca a la base de datos
+	Método que permite agregar un tipo a la base de datos
 	"""
 	c = conectar()
 	c[0].execute('''INSERT INTO tipos(nombre, puertas) VALUES(?, ?)''',(nombre, puertas))
 	c[1].commit()
+
+def guardar_imagen(image_filename,image):
+	'''Método que genera una copia del archivo 'image_filename' que guarda en el direcctorio del programa'''
+	try:
+		os.mkdir(str(os.getcwd())+'/images')
+	except:
+		pass
+	shutil.copy(image_filename, str(os.getcwd())+'/images/'+image)

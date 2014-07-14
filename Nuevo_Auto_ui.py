@@ -8,6 +8,7 @@
 # WARNING! All changes made in this file will be lost!
 
 from PySide import QtCore, QtGui
+import controller
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -122,11 +123,13 @@ class Ui_Dialog(object):
         self.verticalLayout_5.addLayout(self.horizontalLayout)
         self.gridLayout.addLayout(self.verticalLayout_5, 0, 0, 1, 1)
 
-        marcas = [
-            {"id": "0", "name": "----"},
-            {"id": "1", "name": "Hyundai"}]
+        datos = controller.getMarcas()
+        self.marcas = [{"id": "0", "name": "----"}]
+        for i in datos:
+            actual = {"id": str(i['id_marca']), "name":str(i['nombre'])}
+            self.marcas.append(actual)
 
-        for element in marcas:
+        for element in self.marcas:
             self.marca_auto.addItem(element["name"], element["id"])
 
 

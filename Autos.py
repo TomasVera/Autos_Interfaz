@@ -14,8 +14,8 @@ class Autos(QtGui.QDialog):
         (u"Peso", 50),
         (u"Rendimiento", 100),
         (u"Año", 50),
-        (u"Marca", 50),
-        (u"Tipo", 50)
+        (u"Tipo", 100),
+        (u"Marca", 100)
         )
 
 
@@ -57,14 +57,20 @@ class Autos(QtGui.QDialog):
 
     def indexChanged(self):
         getRendimiento = int(self.ui.cb_rendimiento.currentIndex())
-        getPeso = int(self.ui.cb_peso.currentIndex())
-        getAnio = int(self.ui.cb_anio.currentIndex())
+        if(int(self.ui.cb_peso.currentIndex())!=0):
+            getPeso = int(self.ui.cb_peso.currentIndex())+499
+        else:
+            getPeso = 0
+        if(int(self.ui.cb_anio.currentIndex())!=0):
+            getAnio = int(self.ui.cb_anio.currentIndex())+1919
+        else:
+            getAnio = 0
         print(getRendimiento)
         print("--")
         print(getPeso)
         print("--")
         print(getAnio)
-        if (getRendimiento == 0 and getPeso == 0):
+        if (getRendimiento != 0 and getPeso != 0):
             if(getAnio == 0):
                 self.load_data_tabla()
             else:
@@ -81,7 +87,9 @@ class Autos(QtGui.QDialog):
             self.ui.car_table.setColumnWidth(col, h[1])
 
         for i,data in enumerate(datos):
-            row = [data[1],data[2],data[3],data[4],data[6],data[8],data[9],data[10]]
+            marca = controller.getMarcaId(int(data[10]))[0]['nombre']
+            tipo = controller.getTipoId(int(data[9]))[0]['nombre']
+            row = [data[1],data[2],data[3],data[4],data[6],data[8],tipo,marca]
             for j, field in enumerate(row):
                 index = model.index(i, j, QtCore.QModelIndex())
                 model.setData(index,field)
@@ -101,7 +109,9 @@ class Autos(QtGui.QDialog):
             self.ui.car_table.setColumnWidth(col, h[1])
 
         for i,data in enumerate(datos):
-            row = [data[1],data[2],data[3],data[4],data[6],data[8],data[9],data[10]]
+            marca = controller.getMarcaId(int(data[10]))[0]['nombre']
+            tipo = controller.getTipoId(int(data[9]))[0]['nombre']
+            row = [data[1],data[2],data[3],data[4],data[6],data[8],tipo,marca]
             for j, field in enumerate(row):
                 index = model.index(i, j, QtCore.QModelIndex())
                 model.setData(index,field)

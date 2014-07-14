@@ -14,11 +14,12 @@ class NuevoAuto(QtGui.QDialog):
 		self.show()
 		self.connect_actions()
 		if(id==None):
+			self.id=0
 			self.identificador = False
 			self.setWindowTitle("Nuevo Auto")
 			self.show()
-
 		else:
+			self.id=id
 			self.identificador = True
 			self.setWindowTitle("Editar Auto")
 			auto = controller.getAutoId(id)
@@ -26,12 +27,15 @@ class NuevoAuto(QtGui.QDialog):
 				self.ui.modelo_auto.setText(row['modelo'])
 				self.ui.color_auto.setText(row['color'])
 				self.ui.motor_auto.setText(row['motor'])
-				#self.ui.tipo_auto.setText(row['tipo'])
+				tipo = controller.getTipoId(int(row['fk_id_tipo']))[0]
+				self.ui.tipo_auto.setText(tipo['nombre'])
+				self.ui.sb_n_puertas.setValue(int(tipo['puertas']))
 				self.ui.edit_descripcion.setText(row['descripcion'])
 				self.ui.rendimiento_auto.setText(str(row['rendimiento']))
 				self.ui.peso_auto.setText(str(row['peso']))
 				self.ui.marca_auto.setCurrentIndex(int(row['fk_id_marca']))
-			if(auto[0]['imagen']!=None):
+				self.ui.cb_creacion_auto.setCurrentIndex(int(row['fecha_creacion'])-1919)
+			if(auto[0]['imagen']!="0"):
 				pmap = QtGui.QPixmap(str(os.getcwd())+"/images/"+str(auto[0]['imagen']))
 				self.ui.nueva_imagen.setPixmap(pmap)
 			else:
@@ -59,22 +63,52 @@ class NuevoAuto(QtGui.QDialog):
 				msgBox.exec_()
 
 	def action_btn_aceptar(self):
+		modelo = str(self.ui.modelo_auto.text())
+		color = str(self.ui.color_auto.text())
+		motor = str(self.ui.motor_auto.text())
+		descripcion = str(self.ui.edit_descripcion.toPlainText())
+		rendimiento = int(self.ui.rendimiento_auto.text())
+		peso = int(self.ui.peso_auto.text())
+		if(self.change_image):
+			autos = controller.getAutos()
+			autosIds = [0]
+			for i in autos:
+				actual = int(i['id_auto'])
+				autosIds.append(actual)
+			imagen = str(max(autosIds)+1)+".jpg"
+			controller.guardar_imagen(self.image_filename,imagen)
+		else:
+			if(self.id==0):
+				imagen = "0"
+			else:
+				imagen = str(self.id)+".jpg"
+		fecha_creacion = str(self.ui.cb_creacion_auto.currentIndex()+1919)
+		fk_id_marca = self.ui.marca_auto.currentIndex()
+		fk_id_tipo = 0
+		datos = controller.getTipos()
+		tiposBD = ["----"]
+		for i in datos:
+			actual = [str(i['nombre'])]
+			tiposBD.append(actual)
+		tipo = str(self.ui.tipo_auto.text())
+		for i,tipoBD in enumerate(tiposBD):
+			if (tipoBD[0] == tipo):
+				fk_id_tipo = i
+		if (fk_id_tipo == 0):
+			controller.agregarInfoTipos(tipo,int(self.ui.sb_n_puertas.value()))
+		datos = controller.getTipos()
+		tiposBD = ["----"]
+		for i in datos:
+			actual = [str(i['nombre'])]
+			tiposBD.append(actual)
+		tipo = str(self.ui.tipo_auto.text())
+		for i,tipoBD in enumerate(tiposBD):
+			if (tipoBD[0] == tipo):
+				fk_id_tipo = i
 		if self.identificador == False:
-			modelo = str(self.ui.modelo_auto.text())
-			color = str(self.ui.color_auto.text())
-			motor = str(self.ui.motor_auto.text())
-			descripcion = str(self.ui.edit_descripcion.toPlainText())
-			rendimiento = int(self.ui.rendimiento_auto.text())
-			peso = int(self.ui.peso_auto.text())
-			imagen = self.image_filename
-			fecha_creacion = 0
-			fk_id_marca = 1
-			fk_id_tipo = 1
-			print imagen
-			controller.agregarInfoAutos(modelo, color, motor, peso, descripcion, rendimiento, imagen, fecha_creacion, fk_id_marca, fk_id_tipo)  
-			self.setVisible(False)
-		#else:
-			
+			controller.agregarInfoAutos(modelo, color, motor, peso, descripcion, rendimiento, imagen, fecha_creacion, fk_id_tipo, fk_id_marca)  
+		else:
+			controller.editarInfoAutos(self.id, modelo, color, motor, peso, descripcion, rendimiento, imagen, fecha_creacion, fk_id_tipo, fk_id_marca)  
 
-		#if(self.change_image):
-		#	controller.guardar_imagen(self.image_filename,"0.jpg")
+
+		self.setVisible(False)
