@@ -23,14 +23,24 @@ class Marcas(QtGui.QDialog):
         self.ui.btn_nueva_marca.clicked.connect(self.action_btn_nueva_marca)
         self.ui.abrir_auto2.clicked.connect(self.action_abrir_auto2)
         self.ui.btn_editar_marca.clicked.connect(self.action_btn_editar_marca)
+        self.ui.btn_eliminar_marca.clicked.connect(self.action_btn_eliminar_marca)
 
     def action_btn_nueva_marca(self):
         self.nuevaMarcaWindow = Nueva_Marca.NuevaMarca()
+        self.nuevaMarcaWindow.reloadT.connect(self.load_data_tabla)
         self.nuevaMarcaWindow.exec_()
 
     def action_btn_editar_marca(self):
-        self.nuevaMarcaWindow = Nueva_Marca.NuevaMarca()
-        self.nuevaMarcaWindow.exec_()
+        index = self.ui.marca_table.currentIndex()
+        if index.row() == -1: #No se ha seleccionado producto
+            self.errorMessageDialog = QtGui.QErrorMessage(self)
+            self.errorMessageDialog.showMessage("Debe seleccionar una marca")
+            return False
+        else:
+            id = index.row()+1
+            self.editMarcaWindow = Nueva_Marca.NuevaMarca(id)
+            self.editMarcaWindow.reloadT.connect(self.load_data_tabla)
+            self.editMarcaWindow.exec_()
 
     def action_abrir_auto2(self):
         self.setVisible(False)
@@ -54,3 +64,30 @@ class Marcas(QtGui.QDialog):
                 index = model.index(i, j, QtCore.QModelIndex())
                 model.setData(index,field)
             model.item(i).mov = data
+
+    def action_btn_eliminar_marca(self):
+        ''' al clickear el boton "Eliminar"'''
+        index = self.ui.marca_table.currentIndex()
+        if index.row() == -1: #No se ha seleccionado un producto
+            self.errorMessageDialog = QtGui.QErrorMessage(self)
+            self.errorMessageDialog.showMessage("Debe seleccionar una marca")
+            return False
+        else:
+            msgBox1=QtGui.QMessageBox()
+            msgBox1.setWindowTitle("Alerta")
+            msgBox1.setText("Esta seguro? ")
+            msgBox1.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+            ret =msgBox1.exec_()
+            if(ret==QtGui.QMessageBox.Yes):
+                    id = index.row()+1
+                    if (controller.borrarInfoMarcas(id)):
+                        self.load_data_tabla()
+                        msgBox = QtGui.QMessageBox()
+                        msgBox.setWindowTitle("Aviso")
+                        msgBox.setText("La marca fue eliminada con exito.")
+                        msgBox.exec_()
+                        return True
+                    else:
+                        self.ui.errorMessageDialog = QtGui.QErrorMessage(self)
+                        self.ui.errorMessageDialog.showMessage("Error al eliminar el producto")
+                        return False

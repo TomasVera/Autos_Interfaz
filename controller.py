@@ -128,6 +128,15 @@ def editarInfoAutos(id, modelo, color, motor, peso, descripcion, rendimiento, im
 	c[0].execute(query, [modelo,color,motor,peso,descripcion,rendimiento,imagen,fecha_creacion,fk_id_tipo,fk_id_marca,id])
 	c[1].commit()
 
+def editarInfoMarcas(id, nombre, pais):
+	"""
+	Método que permite editar un auto en la base de datos
+	"""
+	c = conectar()
+	query = "UPDATE marcas SET nombre = ?,pais = ? WHERE id_marca = ?"
+	c[0].execute(query, [nombre, pais, id])
+	c[1].commit()
+
 def borrarInfoAutos(id):
 	"""
 	Método para borrar un auto directo en la base de datos, requiere la id del auto seleccionado para borrar
@@ -136,6 +145,40 @@ def borrarInfoAutos(id):
 	exito = False
 	query = "DELETE FROM autos WHERE id_auto = ?"
 	try:
+		resultado = c[0].execute(query, [id])
+		c[1].commit()
+		exito = True
+	except sqlite3.Error as e:
+		exito = False
+		print "Error:", e.args[0]
+	return exito
+
+def borrarInfoAutosMarca(id_marca):
+	"""
+	Método para borrar un auto directo en la base de datos, requiere la marca del auto seleccionado para borrar
+	"""
+	c = conectar()
+	exito = False
+	query = "DELETE FROM autos WHERE fk_id_marca = ?"
+	try:
+		resultado = c[0].execute(query, [id_marca])
+		c[1].commit()
+		exito = True
+	except sqlite3.Error as e:
+		exito = False
+		print "Error:", e.args[0]
+	return exito
+
+def borrarInfoMarcas(id):
+	"""
+	Método para borrar un auto directo en la base de datos, requiere la id del auto seleccionado para borrar
+	"""
+	c = conectar()
+	exito = False
+	query = "DELETE FROM marcas WHERE id_marca = ?"
+	try:
+		id_marca = getMarcaId(id)[0]['id_marca']
+		borrarInfoAutosMarca(id_marca)
 		resultado = c[0].execute(query, [id])
 		c[1].commit()
 		exito = True
