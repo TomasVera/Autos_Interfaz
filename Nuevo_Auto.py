@@ -5,6 +5,7 @@ import controller
 import os
 
 class NuevoAuto(QtGui.QDialog):
+	reloadT = QtCore.Signal()
 	identificador = False
 	change_image = False
 	def __init__(self, id=None):
@@ -109,6 +110,5 @@ class NuevoAuto(QtGui.QDialog):
 			controller.agregarInfoAutos(modelo, color, motor, peso, descripcion, rendimiento, imagen, fecha_creacion, fk_id_tipo, fk_id_marca)  
 		else:
 			controller.editarInfoAutos(self.id, modelo, color, motor, peso, descripcion, rendimiento, imagen, fecha_creacion, fk_id_tipo, fk_id_marca)  
-
-
 		self.setVisible(False)
+		self.reloadT.emit()

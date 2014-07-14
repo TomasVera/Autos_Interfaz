@@ -38,6 +38,7 @@ class Autos(QtGui.QDialog):
 
 	def action_btn_new_car(self):
 		self.nuevoAutoWindow = Nuevo_Auto.NuevoAuto()
+		self.nuevoAutoWindow.reloadT.connect(self.load_data_tabla)
 		self.nuevoAutoWindow.exec_()
 
 	def action_btn_edit_car(self):
@@ -48,8 +49,9 @@ class Autos(QtGui.QDialog):
 			return False
 		else:
 			id = index.row()+1
-			self.nuevoAutoWindow = Nuevo_Auto.NuevoAuto(id)
-			self.nuevoAutoWindow.exec_()
+			self.editAutoWindow = Nuevo_Auto.NuevoAuto(id)
+			self.editAutoWindow.reloadT.connect(self.load_data_tabla)
+			self.editAutoWindow.exec_()
 
 	def action_abrir_marca2(self):
 		self.setVisible(False)
