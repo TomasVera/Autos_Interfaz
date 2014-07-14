@@ -128,6 +128,22 @@ def editarInfoAutos(id, modelo, color, motor, peso, descripcion, rendimiento, im
 	c[0].execute(query, [modelo,color,motor,peso,descripcion,rendimiento,imagen,fecha_creacion,fk_id_tipo,fk_id_marca,id])
 	c[1].commit()
 
+def borrarInfoAutos(id):
+	"""
+	Método para borrar un auto directo en la base de datos, requiere la id del auto seleccionado para borrar
+	"""
+	c = conectar()
+	exito = False
+	query = "DELETE FROM autos WHERE id_auto = ?"
+	try:
+		resultado = c[0].execute(query, [id])
+		c[1].commit()
+		exito = True
+	except sqlite3.Error as e:
+		exito = False
+		print "Error:", e.args[0]
+	return exito
+
 def agregarInfoTipos(nombre, puertas):
 	"""
 	Método que permite agregar un tipo a la base de datos
@@ -136,6 +152,8 @@ def agregarInfoTipos(nombre, puertas):
 	c[0].execute('''INSERT INTO tipos(nombre, puertas) VALUES(?, ?)''',(nombre, puertas))
 	c[1].commit()
 
+
+
 def guardar_imagen(image_filename,image):
 	'''Método que genera una copia del archivo 'image_filename' que guarda en el direcctorio del programa'''
 	try:
@@ -143,3 +161,15 @@ def guardar_imagen(image_filename,image):
 	except:
 		pass
 	shutil.copy(image_filename, str(os.getcwd())+'/images/'+image)
+
+def borrar_imagen(id):
+	'''Método que elimina un fichero generado por el método "guardar_imagen"'''
+	if(buscar_imagen(id)):
+		os.remove(str(os.getcwd())+'/images/'+str(id)+'.jpg')
+
+def buscar_imagen(id):
+	'''Método que busca en el directorio del programa la imagen de un determinado auto(por su id), retorna 'True' si existe y 'False' si no''' 
+	if(os.path.exists(str(os.getcwd())+'/images/'+str(id)+'.jpg')):
+		return True
+	else:
+		return False
