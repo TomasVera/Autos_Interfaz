@@ -32,6 +32,7 @@ class Marcas(QtGui.QDialog):
         self.nuevaMarcaWindow.exec_()
 
     def action_btn_editar_marca(self):
+        '''Metodo para editar una marca seleccionandola desde la grilla'''
         index = self.ui.marca_table.currentIndex()
         if index.row() == -1: #No se ha seleccionado producto
             self.errorMessageDialog = QtGui.QErrorMessage(self)
@@ -49,7 +50,7 @@ class Marcas(QtGui.QDialog):
         self.autosWindow.exec_()
 
     def load_data_tabla(self):
-        '''Método para mostrar los datos de la tabla, muestra todos los elementos de la tabla "movies" de la base de datos'''
+        '''Método para mostrar los datos de la tabla, muestra todos los elementos de la tabla Marcas de la base de datos'''
         datos = controller.getMarcas()
         rows = len(datos)
         model = QtGui.QStandardItemModel(rows,len(self.tabla_columnas))
@@ -72,7 +73,7 @@ class Marcas(QtGui.QDialog):
             model.item(i).mov = data
 
     def action_btn_eliminar_marca(self):
-        ''' al clickear el boton "Eliminar"'''
+        '''Metodo que elimina una Marca '''
         index = self.ui.marca_table.currentIndex()
         if index.row() == -1: #No se ha seleccionado un producto
             self.errorMessageDialog = QtGui.QErrorMessage(self)

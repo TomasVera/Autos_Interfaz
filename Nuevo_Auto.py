@@ -68,6 +68,8 @@ class NuevoAuto(QtGui.QDialog):
 				msgBox.exec_()
 
 	def action_btn_aceptar(self):
+                '''Metodo para agregar un nuevo auto desde el formulario de creacion, validando los datos de entrada y mostrando los campos
+                    que estan incorrectos'''
 		modelo = str(self.ui.modelo_auto.text())
 		color = str(self.ui.color_auto.text())
 		motor = str(self.ui.motor_auto.text())

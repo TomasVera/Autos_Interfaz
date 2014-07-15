@@ -30,6 +30,7 @@ class Autos(QtGui.QDialog):
 
 
 	def connect_actions(self):
+                '''Metodo para conectar la accion de todos los botones'''
 		self.ui.btn_new_car.clicked.connect(self.action_btn_new_car)
 		self.ui.abrir_marca2.clicked.connect(self.action_abrir_marca2)
 		self.ui.btn_edit_car.clicked.connect(self.action_btn_edit_car)
@@ -38,11 +39,13 @@ class Autos(QtGui.QDialog):
 		self.ui.cb_rendimiento.currentIndexChanged[int].connect(self.indexChanged)
 
 	def action_btn_new_car(self):
+                '''Metodo para lanzar el formulario de creacion del nuevo vehiculo'''
 		self.nuevoAutoWindow = Nuevo_Auto.NuevoAuto()
 		self.nuevoAutoWindow.reloadT.connect(self.load_data_tabla)
 		self.nuevoAutoWindow.exec_()
 
 	def action_btn_edit_car(self):
+                '''Método usado para editar un auto seleccionado desde la grilla'''
 		index = self.ui.car_table.currentIndex()
 		if index.row() == -1: #No se ha seleccionado producto
 			msgBox = QtGui.QMessageBox()
@@ -121,7 +124,7 @@ class Autos(QtGui.QDialog):
 		self.ui.descripcion.setText(str(auto[0]['descripcion']))
 
 	def action_btn_delete_car(self):
-		''' al clickear el boton "Eliminar"'''
+		'''Se elimina un auto directamente seleccionandolo desde la grilla con un mensaje de confirmacion"'''
 		index = self.ui.car_table.currentIndex()
 		if index.row() == -1: #No se ha seleccionado un producto
 			msgBox = QtGui.QMessageBox()

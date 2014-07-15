@@ -30,6 +30,7 @@ class NuevaMarca(QtGui.QDialog):
 		self.setMaximumWidth(self.width()-1)
 
 	def action_btn_aceptar(self):
+                '''Metodo para agregar una nueva marca cuando se presiona el boton "aceptar" '''
 		nombre = str(self.ui.nombre_marca.text())
 		pais = str(self.ui.pais_marca.text())
 		if self.identificador == False:

@@ -20,6 +20,7 @@ def getAutos():
 	return datos
 
 def getAutoId(id):
+        '''Metodo para obtener un auto especifico a traves de su ID'''
 	c = conectar()[0]
 	query = "SELECT * FROM autos WHERE id_auto = ?"
 	resultado = c.execute(query, [id])
@@ -35,7 +36,8 @@ def getMarcas():
 	return datos
 
 def getMarcaId(id):
-	c = conectar()[0]
+        '''Metodo para obtener una marca especifica a traves de su ID'''
+        c = conectar()[0]
 	query = "SELECT * FROM marcas WHERE id_marca = ?"
 	resultado = c.execute(query, [id])
 	auto = resultado.fetchall()

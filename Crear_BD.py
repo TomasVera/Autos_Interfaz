@@ -42,7 +42,7 @@ def main():
 	controller.agregarInfoUsuarios('Molina', '1234')
 	controller.agregarInfoUsuarios('Felipe', '1234')
 	controller.agregarInfoUsuarios('Jaime', '1234')
-	controller.agregarInfoUsuarios('Tomas', 'soygay')
+	controller.agregarInfoUsuarios('Tomas', '1234')
 
 	controller.agregarInfoMarcas('Hyundai', 'Corea del Sur')
 	controller.agregarInfoMarcas('Suzuki', 'Japon')
